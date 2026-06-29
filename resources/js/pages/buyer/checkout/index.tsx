@@ -2,6 +2,9 @@ import { Head, Link, useForm, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useState } from 'react';
+import axios from 'axios';
+import { toast } from 'sonner';
 
 interface CartItem {
     id: number;
@@ -25,13 +28,51 @@ interface Address {
 export default function BuyerCheckout({ cartItems, addresses, walletBalance }: { cartItems: CartItem[], addresses: Address[], walletBalance: number }) {
     const defaultAddress = addresses?.find(a => a.is_default) || addresses?.[0];
     
+    const [discountCodeInput, setDiscountCodeInput] = useState('');
+    const [discountAmount, setDiscountAmount] = useState(0);
+    const [isValidatingDiscount, setIsValidatingDiscount] = useState(false);
+
     const { data, setData, post, processing, errors } = useForm({
         shipping_address: defaultAddress ? defaultAddress.full_address : '',
+        shipping_method: 'Regular',
+        discount_code: '',
     });
 
-    const totalAmount = cartItems?.reduce((total, item) => {
+    const subtotal = cartItems?.reduce((total, item) => {
         return total + (parseFloat(item.product.price) * item.quantity);
     }, 0) || 0;
+
+    const deliveryFees = {
+        'Instant': 15,
+        'Next Day': 10,
+        'Regular': 5,
+    };
+    
+    const deliveryFee = deliveryFees[data.shipping_method as keyof typeof deliveryFees] || 0;
+    
+    const discountedSubtotal = Math.max(0, subtotal - discountAmount);
+    const tax = discountedSubtotal * 0.12;
+    const totalAmount = discountedSubtotal + tax + deliveryFee;
+
+    const applyDiscount = async () => {
+        if (!discountCodeInput) return;
+        setIsValidatingDiscount(true);
+        try {
+            const res = await axios.post('/buyer/checkout/discount', {
+                code: discountCodeInput,
+                subtotal: subtotal
+            });
+            setDiscountAmount(res.data.discount_amount);
+            setData('discount_code', res.data.code);
+            toast.success(res.data.message);
+        } catch (err: any) {
+            toast.error(err.response?.data?.error || 'Invalid discount code');
+            setDiscountAmount(0);
+            setData('discount_code', '');
+        } finally {
+            setIsValidatingDiscount(false);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -79,6 +120,40 @@ export default function BuyerCheckout({ cartItems, addresses, walletBalance }: {
                                         {errors.shipping_address && <p className="text-destructive text-sm">{errors.shipping_address}</p>}
                                 </div>
                             </div>
+
+                            <div className="bg-background border border-border rounded-[18px] p-8">
+                                <h2 className="text-2xl font-semibold mb-6">Shipping Method</h2>
+                                <div className="grid gap-4">
+                                    {(Object.entries(deliveryFees) as [string, number][]).map(([method, fee]) => (
+                                        <div 
+                                            key={method}
+                                            onClick={() => setData('shipping_method', method)}
+                                            className={`p-4 border rounded-xl cursor-pointer transition-colors flex justify-between items-center ${data.shipping_method === method ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/50'}`}
+                                        >
+                                            <p className="font-semibold">{method} Delivery</p>
+                                            <p className="font-medium text-primary">${fee.toFixed(2)}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-background border border-border rounded-[18px] p-8 mt-8">
+                                <h2 className="text-2xl font-semibold mb-6">Discount Code</h2>
+                                <div className="flex gap-4">
+                                    <Input 
+                                        placeholder="Enter code (e.g., WELCOME10)" 
+                                        value={discountCodeInput}
+                                        onChange={(e) => setDiscountCodeInput(e.target.value)}
+                                        className="h-12 text-lg"
+                                    />
+                                    <Button type="button" onClick={applyDiscount} disabled={isValidatingDiscount || !discountCodeInput} className="h-12 px-6">
+                                        Apply
+                                    </Button>
+                                </div>
+                                {data.discount_code && (
+                                    <p className="text-green-600 font-medium mt-4">Applied: {data.discount_code} (-${discountAmount.toFixed(2)})</p>
+                                )}
+                            </div>
                         </div>
 
                         <div className="md:col-span-1">
@@ -97,9 +172,30 @@ export default function BuyerCheckout({ cartItems, addresses, walletBalance }: {
                                     ))}
                                 </div>
 
+                                <div className="pt-6 border-t border-border mb-6 space-y-3">
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-muted-foreground">Subtotal</span>
+                                        <span className="font-medium">${subtotal.toFixed(2)}</span>
+                                    </div>
+                                    {discountAmount > 0 && (
+                                        <div className="flex justify-between text-sm text-green-600">
+                                            <span className="font-medium">Discount ({data.discount_code})</span>
+                                            <span className="font-medium">-${discountAmount.toFixed(2)}</span>
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-muted-foreground">Delivery Fee ({data.shipping_method})</span>
+                                        <span className="font-medium">${deliveryFee.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-muted-foreground">Tax (12% PPN)</span>
+                                        <span className="font-medium">${tax.toFixed(2)}</span>
+                                    </div>
+                                </div>
+
                                 <div className="pt-6 border-t border-border mb-8 space-y-4">
                                     <div className="flex justify-between items-end">
-                                        <span className="font-semibold text-lg">Total</span>
+                                        <span className="font-semibold text-lg">Grand Total</span>
                                         <span className="font-bold text-2xl text-primary">${totalAmount.toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between items-center text-sm">

@@ -32,6 +32,13 @@ class CartController extends Controller
         $user = auth()->user();
         $cart = Cart::firstOrCreate(['user_id' => $user->id]);
 
+        $product = Product::findOrFail($request->product_id);
+        $firstItem = $cart->items()->with('product')->first();
+        
+        if ($firstItem && $firstItem->product->store_id !== $product->store_id) {
+            return redirect()->back()->with('error', 'You can only checkout from one store at a time. Please clear your cart first.');
+        }
+
         $cartItem = $cart->items()->where('product_id', $request->product_id)->first();
 
         if ($cartItem) {

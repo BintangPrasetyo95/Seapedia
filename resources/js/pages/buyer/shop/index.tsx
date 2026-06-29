@@ -142,7 +142,14 @@ export default function Shop({ products, cartItemCount = 0 }: { products: Produc
                                                     onClick={() => {
                                                         router.post('/buyer/cart', { product_id: product.id }, { 
                                                             preserveScroll: true,
-                                                            onSuccess: () => toast.success('Added to cart!')
+                                                            onSuccess: (page) => {
+                                                                const flash = page.props.flash as any;
+                                                                if (flash?.error) {
+                                                                    toast.error(flash.error);
+                                                                } else {
+                                                                    toast.success(flash?.success || 'Added to cart!');
+                                                                }
+                                                            }
                                                         });
                                                     }}
                                                 >

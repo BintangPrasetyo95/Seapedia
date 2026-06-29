@@ -35,7 +35,7 @@ class OrderController extends Controller
         }
 
         $validated = $request->validate([
-            'status' => 'required|string|in:Pending,Processing,Shipped,Delivered,Cancelled',
+            'status' => 'required|string|in:Sedang Dikemas,Menunggu Pengirim,Sedang Dikirim,Pesanan Selesai,Dibatalkan',
         ]);
 
         $order->update(['status' => $validated['status']]);

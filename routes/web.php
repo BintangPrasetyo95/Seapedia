@@ -34,13 +34,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'store'])->name('buyer.addresses.store');
     Route::put('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'update'])->name('buyer.addresses.update');
     Route::delete('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'destroy'])->name('buyer.addresses.destroy');
-    
-    Route::get('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
-    Route::post('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
-    Route::delete('buyer/cart/{id}', [\App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
-    
-    Route::get('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
-    Route::post('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
+    Route::get('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
+    Route::post('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
+    Route::delete('buyer/cart/{id}', [App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
+
+    Route::get('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
+    Route::post('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
+    Route::post('buyer/checkout/discount', [App\Http\Controllers\Buyer\CheckoutController::class, 'validateDiscount'])->name('buyer.checkout.discount');
     
     Route::get('buyer/orders', [\App\Http\Controllers\Buyer\OrderController::class, 'index'])->name('buyer.orders.index');
 

@@ -62,11 +62,11 @@ export default function SellerOrders({ orders }: { orders: Order[] }) {
                                                     <SelectValue placeholder="Status" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="Pending">Pending</SelectItem>
-                                                    <SelectItem value="Processing">Processing</SelectItem>
-                                                    <SelectItem value="Shipped">Shipped</SelectItem>
-                                                    <SelectItem value="Delivered">Delivered</SelectItem>
-                                                    <SelectItem value="Cancelled">Cancelled</SelectItem>
+                                                    <SelectItem value="Sedang Dikemas">Sedang Dikemas</SelectItem>
+                                                    <SelectItem value="Menunggu Pengirim">Menunggu Pengirim</SelectItem>
+                                                    <SelectItem value="Sedang Dikirim">Sedang Dikirim</SelectItem>
+                                                    <SelectItem value="Pesanan Selesai">Pesanan Selesai</SelectItem>
+                                                    <SelectItem value="Dibatalkan">Dibatalkan</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
