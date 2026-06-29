@@ -12,51 +12,59 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Seller Routes
-    Route::get('seller/store/create', [\App\Http\Controllers\Seller\StoreController::class, 'create'])->name('seller.store.create');
-    Route::post('seller/store', [\App\Http\Controllers\Seller\StoreController::class, 'store'])->name('seller.store.store');
-    Route::resource('seller/products', \App\Http\Controllers\Seller\ProductController::class)->names([
-        'index' => 'seller.products.index',
-        'create' => 'seller.products.create',
-        'store' => 'seller.products.store',
-        'edit' => 'seller.products.edit',
-        'update' => 'seller.products.update',
-        'destroy' => 'seller.products.destroy',
-    ]);
-    Route::get('seller/orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])->name('seller.orders.index');
-    Route::put('seller/orders/{order}', [\App\Http\Controllers\Seller\OrderController::class, 'update'])->name('seller.orders.update');
+    Route::middleware('active_role:Seller')->group(function () {
+        Route::get('seller/store/create', [\App\Http\Controllers\Seller\StoreController::class, 'create'])->name('seller.store.create');
+        Route::post('seller/store', [\App\Http\Controllers\Seller\StoreController::class, 'store'])->name('seller.store.store');
+        Route::resource('seller/products', \App\Http\Controllers\Seller\ProductController::class)->names([
+            'index' => 'seller.products.index',
+            'create' => 'seller.products.create',
+            'store' => 'seller.products.store',
+            'edit' => 'seller.products.edit',
+            'update' => 'seller.products.update',
+            'destroy' => 'seller.products.destroy',
+        ]);
+        Route::get('seller/orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])->name('seller.orders.index');
+        Route::put('seller/orders/{order}', [\App\Http\Controllers\Seller\OrderController::class, 'update'])->name('seller.orders.update');
+    });
 
     // Buyer Routes
-    Route::get('buyer/shop', [\App\Http\Controllers\Buyer\ShopController::class, 'index'])->name('buyer.shop.index');
-    Route::get('buyer/wallet', [\App\Http\Controllers\Buyer\WalletController::class, 'index'])->name('buyer.wallet.index');
-    Route::post('buyer/wallet/topup', [\App\Http\Controllers\Buyer\WalletController::class, 'topup'])->name('buyer.wallet.topup');
-    
-    Route::get('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'index'])->name('buyer.addresses.index');
-    Route::post('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'store'])->name('buyer.addresses.store');
-    Route::put('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'update'])->name('buyer.addresses.update');
-    Route::delete('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'destroy'])->name('buyer.addresses.destroy');
-    Route::get('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
-    Route::post('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
-    Route::delete('buyer/cart/{id}', [App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
+    Route::middleware('active_role:Buyer')->group(function () {
+        Route::get('buyer/shop', [\App\Http\Controllers\Buyer\ShopController::class, 'index'])->name('buyer.shop.index');
+        Route::get('buyer/wallet', [\App\Http\Controllers\Buyer\WalletController::class, 'index'])->name('buyer.wallet.index');
+        Route::post('buyer/wallet/topup', [\App\Http\Controllers\Buyer\WalletController::class, 'topup'])->name('buyer.wallet.topup');
+        
+        Route::get('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'index'])->name('buyer.addresses.index');
+        Route::post('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'store'])->name('buyer.addresses.store');
+        Route::put('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'update'])->name('buyer.addresses.update');
+        Route::delete('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'destroy'])->name('buyer.addresses.destroy');
+        Route::get('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
+        Route::post('buyer/cart', [App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
+        Route::delete('buyer/cart/{id}', [App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
 
-    Route::get('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
-    Route::post('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
-    Route::post('buyer/checkout/discount', [App\Http\Controllers\Buyer\CheckoutController::class, 'validateDiscount'])->name('buyer.checkout.discount');
-    
-    Route::get('buyer/orders', [\App\Http\Controllers\Buyer\OrderController::class, 'index'])->name('buyer.orders.index');
+        Route::get('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
+        Route::post('buyer/checkout', [App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
+        Route::post('buyer/checkout/discount', [App\Http\Controllers\Buyer\CheckoutController::class, 'validateDiscount'])->name('buyer.checkout.discount');
+        
+        Route::get('buyer/orders', [\App\Http\Controllers\Buyer\OrderController::class, 'index'])->name('buyer.orders.index');
+    });
 
     // Driver Routes
-    Route::get('driver/jobs', [\App\Http\Controllers\Driver\JobController::class, 'index'])->name('driver.jobs.index');
-    Route::post('driver/jobs/{order}/take', [\App\Http\Controllers\Driver\JobController::class, 'takeJob'])->name('driver.jobs.take');
-    Route::post('driver/jobs/{order}/complete', [\App\Http\Controllers\Driver\JobController::class, 'completeJob'])->name('driver.jobs.complete');
-    Route::get('driver/dashboard', [\App\Http\Controllers\Driver\DashboardController::class, 'index'])->name('driver.dashboard');
+    Route::middleware('active_role:Driver')->group(function () {
+        Route::get('driver/jobs', [\App\Http\Controllers\Driver\JobController::class, 'index'])->name('driver.jobs.index');
+        Route::post('driver/jobs/{order}/take', [\App\Http\Controllers\Driver\JobController::class, 'takeJob'])->name('driver.jobs.take');
+        Route::post('driver/jobs/{order}/complete', [\App\Http\Controllers\Driver\JobController::class, 'completeJob'])->name('driver.jobs.complete');
+        Route::get('driver/dashboard', [\App\Http\Controllers\Driver\DashboardController::class, 'index'])->name('driver.dashboard');
+    });
 
     // Admin Routes
-    Route::get('admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::post('admin/simulate-next-day', [\App\Http\Controllers\Admin\DashboardController::class, 'simulateNextDay'])->name('admin.simulate.next.day');
-    
-    Route::get('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'index'])->name('admin.vouchers.index');
-    Route::post('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('admin.vouchers.store');
-    Route::delete('admin/vouchers/{discount}', [\App\Http\Controllers\Admin\VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
+    Route::middleware('active_role:Admin')->group(function () {
+        Route::get('admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('admin/simulate-next-day', [\App\Http\Controllers\Admin\DashboardController::class, 'simulateNextDay'])->name('admin.simulate.next.day');
+        
+        Route::get('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'index'])->name('admin.vouchers.index');
+        Route::post('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('admin.vouchers.store');
+        Route::delete('admin/vouchers/{discount}', [\App\Http\Controllers\Admin\VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
+    });
     
     // Role Selection
     Route::get('/role-selection', function () {
