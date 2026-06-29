@@ -101,6 +101,8 @@ class CheckoutController extends Controller
                     'status' => 'Sedang Dikemas',
                     'total_amount' => $grandTotal, // Use calculated grand total
                     'shipping_address' => $request->shipping_address,
+                    'shipping_method' => $request->shipping_method,
+                    'delivery_fee' => $deliveryFee,
                 ]);
 
                 foreach ($items as $item) {

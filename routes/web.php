@@ -45,12 +45,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('buyer/orders', [\App\Http\Controllers\Buyer\OrderController::class, 'index'])->name('buyer.orders.index');
 
     // Driver Routes
-    Route::inertia('driver/jobs', 'driver/jobs/index')->name('driver.jobs.index');
-    Route::inertia('driver/dashboard', 'driver/dashboard')->name('driver.dashboard');
+    Route::get('driver/jobs', [\App\Http\Controllers\Driver\JobController::class, 'index'])->name('driver.jobs.index');
+    Route::post('driver/jobs/{order}/take', [\App\Http\Controllers\Driver\JobController::class, 'takeJob'])->name('driver.jobs.take');
+    Route::post('driver/jobs/{order}/complete', [\App\Http\Controllers\Driver\JobController::class, 'completeJob'])->name('driver.jobs.complete');
+    Route::get('driver/dashboard', [\App\Http\Controllers\Driver\DashboardController::class, 'index'])->name('driver.dashboard');
 
     // Admin Routes
-    Route::inertia('admin/dashboard', 'admin/dashboard')->name('admin.dashboard');
-    Route::inertia('admin/vouchers', 'admin/vouchers/index')->name('admin.vouchers.index');
+    Route::get('admin/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::post('admin/simulate-next-day', [\App\Http\Controllers\Admin\DashboardController::class, 'simulateNextDay'])->name('admin.simulate.next.day');
+    
+    Route::get('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'index'])->name('admin.vouchers.index');
+    Route::post('admin/vouchers', [\App\Http\Controllers\Admin\VoucherController::class, 'store'])->name('admin.vouchers.store');
+    Route::delete('admin/vouchers/{discount}', [\App\Http\Controllers\Admin\VoucherController::class, 'destroy'])->name('admin.vouchers.destroy');
     
     // Role Selection
     Route::get('/role-selection', function () {
