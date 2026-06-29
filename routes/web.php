@@ -23,14 +23,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Buyer Routes
     Route::get('buyer/shop', [\App\Http\Controllers\Buyer\ShopController::class, 'index'])->name('buyer.shop.index');
-    Route::inertia('buyer/wallet', 'buyer/wallet/index')->name('buyer.wallet.index');
-    Route::inertia('buyer/addresses', 'buyer/addresses/index')->name('buyer.addresses.index');
+    Route::get('buyer/wallet', [\App\Http\Controllers\Buyer\WalletController::class, 'index'])->name('buyer.wallet.index');
+    Route::post('buyer/wallet/topup', [\App\Http\Controllers\Buyer\WalletController::class, 'topup'])->name('buyer.wallet.topup');
+    
+    Route::get('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'index'])->name('buyer.addresses.index');
+    Route::post('buyer/addresses', [\App\Http\Controllers\Buyer\AddressController::class, 'store'])->name('buyer.addresses.store');
+    Route::put('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'update'])->name('buyer.addresses.update');
+    Route::delete('buyer/addresses/{address}', [\App\Http\Controllers\Buyer\AddressController::class, 'destroy'])->name('buyer.addresses.destroy');
+    
     Route::get('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
     Route::post('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
     Route::delete('buyer/cart/{id}', [\App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
+    
     Route::get('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
     Route::post('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
-    Route::inertia('buyer/orders', 'buyer/orders/index')->name('buyer.orders.index');
+    
+    Route::get('buyer/orders', [\App\Http\Controllers\Buyer\OrderController::class, 'index'])->name('buyer.orders.index');
 
     // Driver Routes
     Route::inertia('driver/jobs', 'driver/jobs/index')->name('driver.jobs.index');

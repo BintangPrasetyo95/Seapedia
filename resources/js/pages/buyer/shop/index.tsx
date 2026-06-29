@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SearchIcon, ShoppingCartIcon } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 interface Store {
     id: number;
@@ -139,7 +140,10 @@ export default function Shop({ products }: { products: Product[] }) {
                                                     size="sm" 
                                                     className="rounded-full gap-2 font-semibold"
                                                     onClick={() => {
-                                                        router.post('/buyer/cart', { product_id: product.id }, { preserveScroll: true });
+                                                        router.post('/buyer/cart', { product_id: product.id }, { 
+                                                            preserveScroll: true,
+                                                            onSuccess: () => toast.success('Added to cart!')
+                                                        });
                                                     }}
                                                 >
                                                     <ShoppingCartIcon className="w-4 h-4" />

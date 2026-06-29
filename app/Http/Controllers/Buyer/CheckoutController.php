@@ -22,7 +22,9 @@ class CheckoutController extends Controller
         }
 
         return inertia('buyer/checkout/index', [
-            'cartItems' => $cartItems
+            'cartItems' => $cartItems,
+            'addresses' => $user->addresses,
+            'walletBalance' => $user->wallet_balance
         ]);
     }
 
@@ -41,6 +43,14 @@ class CheckoutController extends Controller
 
         $cartItems = $cart->items()->with('product')->get();
         
+        $grandTotal = $cartItems->sum(function ($item) {
+            return $item->quantity * $item->product->price;
+        });
+
+        if ($user->wallet_balance < $grandTotal) {
+            return back()->with('error', 'Insufficient wallet balance. Please top up your wallet.');
+        }
+
         // Group items by store_id
         $itemsByStore = $cartItems->groupBy('product.store_id');
 
@@ -70,6 +80,9 @@ class CheckoutController extends Controller
 
             // Clear the cart
             $cart->items()->delete();
+            
+            // Deduct wallet balance
+            $user->decrement('wallet_balance', $grandTotal);
 
             DB::commit();
 
