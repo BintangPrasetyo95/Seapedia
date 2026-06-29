@@ -28,7 +28,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
     Route::post('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
     Route::delete('buyer/cart/{id}', [\App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
-    Route::inertia('buyer/checkout', 'buyer/checkout/index')->name('buyer.checkout.index');
+    Route::get('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'index'])->name('buyer.checkout.index');
+    Route::post('buyer/checkout', [\App\Http\Controllers\Buyer\CheckoutController::class, 'store'])->name('buyer.checkout.store');
     Route::inertia('buyer/orders', 'buyer/orders/index')->name('buyer.orders.index');
 
     // Driver Routes
