@@ -292,9 +292,9 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                             <div>
                                 <h3 className="text-[14px] font-semibold text-[#333333] mb-2 tracking-[-0.01em]">Shop and Learn</h3>
                                 <ul className="space-y-2 text-[12px] leading-[2.41]">
-                                    <li><a href="#" className="hover:underline">Store</a></li>
-                                    <li><a href="#" className="hover:underline">Mac</a></li>
-                                    <li><a href="#" className="hover:underline">iPad</a></li>
+                                    <li><a href="#" className="hover:underline">asd</a></li>
+                                    <li><a href="#" className="hover:underline">dsaas</a></li>
+                                    <li><a href="#" className="hover:underline">adas</a></li>
                                 </ul>
                             </div>
                             <div>
