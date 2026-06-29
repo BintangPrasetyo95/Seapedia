@@ -1,4 +1,5 @@
 import { Head, router } from '@inertiajs/react';
+import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 
@@ -21,7 +22,10 @@ interface Order {
 
 export default function SellerOrders({ orders }: { orders: Order[] }) {
     const handleStatusChange = (orderId: number, newStatus: string) => {
-        router.put(`/seller/orders/${orderId}`, { status: newStatus }, { preserveScroll: true });
+        router.put(`/seller/orders/${orderId}`, { status: newStatus }, { 
+            preserveScroll: true,
+            onSuccess: () => toast.success('Order status updated!')
+        });
     };
 
     return (

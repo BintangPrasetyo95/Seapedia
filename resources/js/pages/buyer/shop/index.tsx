@@ -21,7 +21,7 @@ interface Product {
     store: Store;
 }
 
-export default function Shop({ products }: { products: Product[] }) {
+export default function Shop({ products, cartItemCount = 0 }: { products: Product[], cartItemCount?: number }) {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('All');
 
@@ -157,6 +157,22 @@ export default function Shop({ products }: { products: Product[] }) {
                         )}
                     </div>
                 </div>
+
+                {/* Floating Cart Tab */}
+                {cartItemCount > 0 && (
+                    <div className="fixed bottom-8 right-8 z-50">
+                        <Button 
+                            asChild
+                            size="lg"
+                            className="rounded-full shadow-2xl gap-3 font-semibold px-6 h-14 bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 transition-all duration-300"
+                        >
+                            <Link href="/buyer/cart">
+                                <ShoppingCartIcon className="w-5 h-5" />
+                                <span>{cartItemCount} {cartItemCount === 1 ? 'Item' : 'Items'} in Cart</span>
+                            </Link>
+                        </Button>
+                    </div>
+                )}
             </div>
         </>
     );

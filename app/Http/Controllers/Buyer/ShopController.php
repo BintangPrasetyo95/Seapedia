@@ -24,8 +24,17 @@ class ShopController extends Controller
 
         $products = $query->latest()->get();
 
+        $cartItemCount = 0;
+        if ($user = auth()->user()) {
+            $cart = \App\Models\Cart::where('user_id', $user->id)->first();
+            if ($cart) {
+                $cartItemCount = $cart->items()->sum('quantity');
+            }
+        }
+
         return inertia('buyer/shop/index', [
-            'products' => $products
+            'products' => $products,
+            'cartItemCount' => $cartItemCount
         ]);
     }
 }
