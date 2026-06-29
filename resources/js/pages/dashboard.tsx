@@ -39,7 +39,7 @@ export default function Dashboard() {
                         </div>
                         <div className="bg-background border border-border rounded-[18px] p-8">
                             <h3 className="text-[17px] font-semibold tracking-[-0.374px] text-foreground">Revenue</h3>
-                            <p className="text-[34px] font-semibold tracking-[-0.374px] mt-2">${(metrics?.revenue || 0).toFixed(2)}</p>
+                            <p className="text-[34px] font-semibold tracking-[-0.374px] mt-2">${parseFloat(metrics?.revenue || 0).toFixed(2)}</p>
                         </div>
                     </div>
                     

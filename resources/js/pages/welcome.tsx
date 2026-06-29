@@ -48,9 +48,27 @@ const DUMMY_PRODUCTS = [
     }
 ];
 
-export default function Welcome() {
+interface Store {
+    name: string;
+}
+
+interface Product {
+    id: number;
+    name: string;
+    description: string;
+    price: string | number;
+    image: string | null;
+    store?: Store;
+}
+
+export default function Welcome({ products = [] }: { products?: Product[] }) {
     const { auth } = usePage().props as any;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    
+    const displayProducts = products.length > 0 ? products : DUMMY_PRODUCTS;
+    const heroProduct = displayProducts[0];
+    const secondProduct = displayProducts.length > 1 ? displayProducts[1] : DUMMY_PRODUCTS[1];
+    const gridProducts = displayProducts.slice(2, 6);
 
     return (
         <>
@@ -115,20 +133,21 @@ export default function Welcome() {
                         </div>
                         <div className="max-w-[800px] w-full mx-auto px-4">
                             <img 
-                                src={DUMMY_PRODUCTS[0].image} 
-                                alt="Hero Product" 
-                                className="w-full h-auto object-cover shadow-[0_5px_30px_rgba(0,0,0,0.22)]"
+                                src={heroProduct?.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600'} 
+                                alt={heroProduct?.name} 
+                                className="w-full h-auto object-cover shadow-[0_5px_30px_rgba(0,0,0,0.22)] rounded-3xl"
                             />
                         </div>
                     </section>
 
                     {/* Dark Tile Alternation */}
+                    {secondProduct && (
                     <section id="catalog" className="relative bg-[#272729] text-white w-full py-[80px] flex flex-col items-center justify-center text-center">
                         <h2 className="text-[40px] font-semibold tracking-[0] leading-[1.1] mb-2">
-                            {DUMMY_PRODUCTS[1].name}
+                            {secondProduct.name}
                         </h2>
                         <p className="text-[21px] font-semibold tracking-[0.231px] text-[#cccccc] mb-6">
-                            {DUMMY_PRODUCTS[1].description}
+                            {secondProduct.description}
                         </p>
                         <div className="flex items-center gap-4 mb-12">
                             <Link 
@@ -146,17 +165,19 @@ export default function Welcome() {
                         </div>
                         <div className="max-w-[600px] w-full mx-auto px-4">
                             <img 
-                                src={DUMMY_PRODUCTS[1].image} 
-                                alt="Product" 
-                                className="w-full h-auto object-cover shadow-[0_5px_30px_rgba(0,0,0,0.22)]"
+                                src={secondProduct.image || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600'} 
+                                alt={secondProduct.name} 
+                                className="w-full h-auto object-cover shadow-[0_5px_30px_rgba(0,0,0,0.22)] rounded-3xl"
                             />
                         </div>
                     </section>
+                    )}
 
                     {/* Product Grid */}
+                    {gridProducts.length > 0 && (
                     <section className="w-full py-4 px-4 bg-background">
                         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {DUMMY_PRODUCTS.slice(2).map((product) => (
+                            {gridProducts.map((product) => (
                                 <div key={product.id} className="relative bg-[#f5f5f7] rounded-[18px] overflow-hidden flex flex-col items-center justify-start text-center pt-12 pb-0 px-4 group hover:scale-[1.01] transition-transform duration-300">
                                     <h3 className="text-[32px] font-semibold tracking-[-0.01em] leading-[1.1] text-foreground mb-2">
                                         {product.name}
@@ -180,15 +201,16 @@ export default function Welcome() {
                                     </div>
                                     <div className="w-full mt-auto">
                                         <img 
-                                            src={product.image} 
+                                            src={product.image || 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=600'} 
                                             alt={product.name} 
-                                            className="w-[80%] max-w-[400px] mx-auto h-auto object-cover shadow-[0_5px_30px_rgba(0,0,0,0.12)] rounded-t-[18px]"
+                                            className="w-[80%] max-w-[400px] mx-auto h-[250px] object-cover shadow-[0_5px_30px_rgba(0,0,0,0.12)] rounded-t-[18px]"
                                         />
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </section>
+                    )}
                 </main>
 
                 {/* Footer (Parchment) */}
