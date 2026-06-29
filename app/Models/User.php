@@ -50,11 +50,21 @@ class User extends Authenticatable implements PasskeyUser
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class)->withTimestamps();
+    }
+
+    public function store()
+    {
+        return $this->hasOne(Store::class);
     }
 
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

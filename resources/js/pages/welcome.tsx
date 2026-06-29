@@ -57,19 +57,19 @@ export default function Welcome() {
             <Head title="Welcome to SEAPEDIA" />
             <div className="min-h-screen bg-background text-foreground font-sans">
                 {/* Global Nav (Apple style: pure black) */}
-                <header className="sticky top-0 z-50 w-full bg-black text-white h-[44px]">
-                    <div className="max-w-[1024px] mx-auto flex h-full items-center justify-between px-4 text-[12px] font-normal tracking-[-0.01em]">
+                <header className="sticky top-0 z-50 w-full bg-black text-white h-11">
+                    <div className="max-w-5xl mx-auto flex h-full items-center justify-between px-4 text-[12px] font-normal tracking-[-0.01em]">
                         <div className="flex items-center gap-2">
                             <ShoppingBag size={14} className="opacity-80" />
                         </div>
 
                         {/* Desktop Nav */}
-                        <nav className="hidden md:flex items-center gap-8 opacity-80">
+                        {/* <nav className="hidden md:flex items-center gap-8 opacity-80">
                             <a href="#" className="hover:opacity-100 transition-opacity">Store</a>
                             <a href="#" className="hover:opacity-100 transition-opacity">Mac</a>
                             <a href="#" className="hover:opacity-100 transition-opacity">iPad</a>
                             <a href="#" className="hover:opacity-100 transition-opacity">iPhone</a>
-                        </nav>
+                        </nav> */}
 
                         <div className="hidden md:flex items-center gap-4 opacity-80">
                             {auth?.user ? (

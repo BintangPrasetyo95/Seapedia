@@ -5,14 +5,21 @@ use Illuminate\Support\Facades\Route;
 Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     // Seller Routes
-    Route::inertia('seller/store/create', 'seller/store/create')->name('seller.store.create');
-    Route::inertia('seller/products', 'seller/products/index')->name('seller.products.index');
-    Route::inertia('seller/products/create', 'seller/products/create')->name('seller.products.create');
-    Route::inertia('seller/products/edit', 'seller/products/edit')->name('seller.products.edit');
-    Route::inertia('seller/orders', 'seller/orders/index')->name('seller.orders.index');
+    Route::get('seller/store/create', [\App\Http\Controllers\Seller\StoreController::class, 'create'])->name('seller.store.create');
+    Route::post('seller/store', [\App\Http\Controllers\Seller\StoreController::class, 'store'])->name('seller.store.store');
+    Route::resource('seller/products', \App\Http\Controllers\Seller\ProductController::class)->names([
+        'index' => 'seller.products.index',
+        'create' => 'seller.products.create',
+        'store' => 'seller.products.store',
+        'edit' => 'seller.products.edit',
+        'update' => 'seller.products.update',
+        'destroy' => 'seller.products.destroy',
+    ]);
+    Route::get('seller/orders', [\App\Http\Controllers\Seller\OrderController::class, 'index'])->name('seller.orders.index');
+    Route::put('seller/orders/{order}', [\App\Http\Controllers\Seller\OrderController::class, 'update'])->name('seller.orders.update');
 
     // Buyer Routes
     Route::inertia('buyer/wallet', 'buyer/wallet/index')->name('buyer.wallet.index');
