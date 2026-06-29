@@ -48,10 +48,11 @@ export function AppSidebar() {
     }
     
     if (role === 'Buyer') {
+        mainNavItems.push({ title: 'Marketplace', href: '/buyer/shop', icon: Store });
+        mainNavItems.push({ title: 'My Cart', href: '/buyer/cart', icon: ShoppingCart });
+        mainNavItems.push({ title: 'Orders', href: '/buyer/orders', icon: Package });
         mainNavItems.push({ title: 'Wallet', href: '/buyer/wallet', icon: Package });
         mainNavItems.push({ title: 'Addresses', href: '/buyer/addresses', icon: MapPin });
-        mainNavItems.push({ title: 'My Cart', href: '/buyer/cart', icon: ShoppingCart });
-        mainNavItems.push({ title: 'Checkout', href: '/buyer/checkout', icon: ShoppingCart });
     }
 
     if (role === 'Driver') {

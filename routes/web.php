@@ -22,10 +22,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('seller/orders/{order}', [\App\Http\Controllers\Seller\OrderController::class, 'update'])->name('seller.orders.update');
 
     // Buyer Routes
+    Route::get('buyer/shop', [\App\Http\Controllers\Buyer\ShopController::class, 'index'])->name('buyer.shop.index');
     Route::inertia('buyer/wallet', 'buyer/wallet/index')->name('buyer.wallet.index');
     Route::inertia('buyer/addresses', 'buyer/addresses/index')->name('buyer.addresses.index');
-    Route::inertia('buyer/cart', 'buyer/cart/index')->name('buyer.cart.index');
+    Route::get('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'index'])->name('buyer.cart.index');
+    Route::post('buyer/cart', [\App\Http\Controllers\Buyer\CartController::class, 'store'])->name('buyer.cart.store');
+    Route::delete('buyer/cart/{id}', [\App\Http\Controllers\Buyer\CartController::class, 'destroy'])->name('buyer.cart.destroy');
     Route::inertia('buyer/checkout', 'buyer/checkout/index')->name('buyer.checkout.index');
+    Route::inertia('buyer/orders', 'buyer/orders/index')->name('buyer.orders.index');
 
     // Driver Routes
     Route::inertia('driver/jobs', 'driver/jobs/index')->name('driver.jobs.index');
