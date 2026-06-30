@@ -137,7 +137,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
  * @see app/Http/Controllers/Buyer/AddressController.php:40
  * @route '/buyer/addresses/{address}'
  */
-export const update = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+export const update = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -152,7 +152,7 @@ update.definition = {
  * @see app/Http/Controllers/Buyer/AddressController.php:40
  * @route '/buyer/addresses/{address}'
  */
-update.url = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+update.url = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { address: args }
     }
@@ -185,7 +185,7 @@ update.url = (args: { address: string | number | { id: string | number } } | [ad
  * @see app/Http/Controllers/Buyer/AddressController.php:40
  * @route '/buyer/addresses/{address}'
  */
-update.put = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
+update.put = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'put'> => ({
     url: update.url(args, options),
     method: 'put',
 })
@@ -195,7 +195,7 @@ update.put = (args: { address: string | number | { id: string | number } } | [ad
  * @see app/Http/Controllers/Buyer/AddressController.php:40
  * @route '/buyer/addresses/{address}'
  */
-    const updateForm = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const updateForm = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: update.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'PUT',
@@ -210,7 +210,7 @@ update.put = (args: { address: string | number | { id: string | number } } | [ad
  * @see app/Http/Controllers/Buyer/AddressController.php:40
  * @route '/buyer/addresses/{address}'
  */
-        updateForm.put = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        updateForm.put = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: update.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'PUT',
@@ -226,7 +226,7 @@ update.put = (args: { address: string | number | { id: string | number } } | [ad
  * @see app/Http/Controllers/Buyer/AddressController.php:63
  * @route '/buyer/addresses/{address}'
  */
-export const destroy = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -241,7 +241,7 @@ destroy.definition = {
  * @see app/Http/Controllers/Buyer/AddressController.php:63
  * @route '/buyer/addresses/{address}'
  */
-destroy.url = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { address: args }
     }
@@ -274,7 +274,7 @@ destroy.url = (args: { address: string | number | { id: string | number } } | [a
  * @see app/Http/Controllers/Buyer/AddressController.php:63
  * @route '/buyer/addresses/{address}'
  */
-destroy.delete = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -284,7 +284,7 @@ destroy.delete = (args: { address: string | number | { id: string | number } } |
  * @see app/Http/Controllers/Buyer/AddressController.php:63
  * @route '/buyer/addresses/{address}'
  */
-    const destroyForm = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -299,7 +299,7 @@ destroy.delete = (args: { address: string | number | { id: string | number } } |
  * @see app/Http/Controllers/Buyer/AddressController.php:63
  * @route '/buyer/addresses/{address}'
  */
-        destroyForm.delete = (args: { address: string | number | { id: string | number } } | [address: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { address: number | { id: number } } | [address: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',
