@@ -8,8 +8,12 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (!session()->has('active_role')) {
+            return redirect()->route('role.selection');
+        }
+
         $user = auth()->user();
-        $activeRole = session('active_role', 'Guest');
+        $activeRole = session('active_role');
         
         $metrics = [
             'total_orders' => 0,

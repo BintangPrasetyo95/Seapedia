@@ -24,10 +24,15 @@ export default function Dashboard() {
                             </Button>
                         )}
                     </div>
-                    <p className="text-[21px] font-semibold tracking-[0.231px] text-muted-foreground mb-12">
-                        You are currently logged in as a <span className="text-primary">{activeRole}</span>. 
-                        Your owned roles: <span className="font-normal text-foreground">{(auth?.user?.roles || []).map((r: any) => r.name).join(', ')}</span>
-                    </p>
+                    <div className="mb-12">
+                        <p className="text-[21px] font-semibold tracking-[0.231px] text-muted-foreground mb-4">
+                            You are currently logged in as a <span className="text-primary">{activeRole}</span>. 
+                            Your owned roles: <span className="font-normal text-foreground">{(auth?.user?.roles || []).map((r: any) => r.name).join(', ')}</span>
+                        </p>
+                        <Button variant="outline" asChild className="rounded-full">
+                            <Link href="/role-selection">Switch Workspace Role</Link>
+                        </Button>
+                    </div>
 
                     {activeRole === 'Seller' && (
                         <div className="grid gap-6 md:grid-cols-3">
