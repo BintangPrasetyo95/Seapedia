@@ -44,8 +44,8 @@ if (isset($_ENV['POSTGRES_URL'])) {
     $_SERVER['DB_URL'] = $_ENV['POSTGRES_URL'];
 }
 
-$_ENV['APP_DEBUG'] = 'true';
-$_SERVER['APP_DEBUG'] = 'true';
+$_ENV['APP_DEBUG'] = 'false';
+$_SERVER['APP_DEBUG'] = 'false';
 
 require __DIR__.'/../vendor/autoload.php';
 
