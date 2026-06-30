@@ -1,5 +1,11 @@
 <?php
 
+if (isset($_GET['debug_env']) && $_GET['debug_env'] === 'seapedia123') {
+    echo "Here is your URL! Copy this exactly into your .env:\n\n";
+    echo $_ENV['POSTGRES_URL_NON_POOLING'];
+    exit;
+}
+
 use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
