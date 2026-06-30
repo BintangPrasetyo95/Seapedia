@@ -117,7 +117,11 @@ class DatabaseSeeder extends Seeder
         // Create an Application Review
         ApplicationReview::firstOrCreate(
             ['user_id' => $buyer->id],
-            ['rating' => 5, 'comment' => 'This app makes it so easy to get fresh seafood straight to my door! Highly recommended.']
+            [
+                'reviewer_name' => 'John Doe',
+                'rating' => 5, 
+                'comment' => 'This app makes it so easy to get fresh seafood straight to my door! Highly recommended.'
+            ]
         );
     }
 }
