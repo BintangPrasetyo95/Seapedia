@@ -44,6 +44,10 @@ if (isset($_ENV['POSTGRES_URL'])) {
     $_SERVER['DB_URL'] = $_ENV['POSTGRES_URL'];
 }
 
+// Force session to use cookies instead of ephemeral serverless filesystem
+$_ENV['SESSION_DRIVER'] = 'cookie';
+$_SERVER['SESSION_DRIVER'] = 'cookie';
+
 $_ENV['APP_DEBUG'] = 'false';
 $_SERVER['APP_DEBUG'] = 'false';
 
