@@ -37,6 +37,13 @@ $_SERVER['APP_EVENTS_CACHE'] = $tmpStorage . '/bootstrap/cache/events.php';
 $_ENV['LOG_CHANNEL'] = 'stderr';
 $_SERVER['LOG_CHANNEL'] = 'stderr';
 
+if (isset($_ENV['POSTGRES_URL'])) {
+    $_ENV['DB_CONNECTION'] = 'pgsql';
+    $_SERVER['DB_CONNECTION'] = 'pgsql';
+    $_ENV['DB_URL'] = $_ENV['POSTGRES_URL'];
+    $_SERVER['DB_URL'] = $_ENV['POSTGRES_URL'];
+}
+
 $_ENV['APP_DEBUG'] = 'true';
 $_SERVER['APP_DEBUG'] = 'true';
 
