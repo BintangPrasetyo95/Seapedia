@@ -212,7 +212,7 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                     <section className="w-full py-4 px-4 bg-background">
                         <div className="max-w-350 mx-auto grid grid-cols-1 md:grid-cols-2 gap-4">
                             {gridProducts.map((product) => (
-                                <div key={product.id} className="relative bg-[#f5f5f7] rounded-[18px] overflow-hidden flex flex-col items-center justify-start text-center pt-12 pb-0 px-4 group hover:scale-[1.01] transition-transform duration-300">
+                                <div key={product.id} className="relative bg-secondary rounded-[18px] overflow-hidden flex flex-col items-center justify-start text-center pt-12 pb-0 px-4 group hover:scale-[1.01] transition-transform duration-300">
                                     <h3 className="text-[32px] font-semibold tracking-[-0.01em] leading-[1.1] text-foreground mb-2">
                                         {product.name}
                                     </h3>
@@ -253,7 +253,7 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                                 <h2 className="text-[32px] font-semibold tracking-[-0.01em] mb-12 text-center">What Our Users Say</h2>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     {reviews.map((review: any) => (
-                                        <div key={review.id} className="bg-[#f5f5f7] p-6 rounded-3xl">
+                                        <div key={review.id} className="bg-secondary p-6 rounded-3xl">
                                             <div className="flex gap-1 mb-3">
                                                 {[1, 2, 3, 4, 5].map((star) => (
                                                     <Star 
@@ -263,8 +263,8 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                                                     />
                                                 ))}
                                             </div>
-                                            <p className="text-[#1d1d1f] text-[15px] mb-4">"{review.comment}"</p>
-                                            <p className="text-[#86868b] text-[13px] font-semibold">
+                                            <p className="text-foreground text-[15px] mb-4">"{review.comment}"</p>
+                                            <p className="text-muted-foreground text-[13px] font-semibold">
                                                 {review.reviewer_name || (review.user ? review.user.name : 'Anonymous Guest')}
                                             </p>
                                         </div>
@@ -275,8 +275,8 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                     )}
 
                     {/* App Review Form */}
-                    <section className="w-full py-20 px-4 bg-[#f5f5f7]">
-                        <div className="max-w-200 mx-auto bg-white rounded-3xl p-8 shadow-sm text-center">
+                    <section className="w-full py-20 px-4 bg-secondary">
+                        <div className="max-w-200 mx-auto bg-card rounded-3xl p-8 shadow-sm text-center">
                             <h2 className="text-[32px] font-semibold tracking-[-0.01em] mb-4">We Value Your Feedback</h2>
                             <p className="text-muted-foreground mb-8 text-[17px]">Tell us what you think about SEAPEDIA.</p>
                             
@@ -325,13 +325,13 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                 </main>
 
                 {/* Footer (Parchment) */}
-                <footer className="bg-[#f5f5f7] text-[#7a7a7a] py-16 px-4">
+                <footer className="bg-secondary text-muted-foreground py-16 px-4">
                     <div className="max-w-5xl mx-auto text-[12px] font-normal leading-[1.3] tracking-[-0.01em]">
                         <p className="mb-4">1. Price includes a $30 SEAPEDIA instant discount. Terms apply.</p>
-                        <hr className="border-[#e0e0e0] my-4" />
+                        <hr className="border-border my-4" />
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-4">
                             <div>
-                                <h3 className="text-[14px] font-semibold text-[#333333] mb-2 tracking-[-0.01em]">Shop and Learn</h3>
+                                <h3 className="text-[14px] font-semibold text-foreground mb-2 tracking-[-0.01em]">Shop and Learn</h3>
                                 <ul className="space-y-2 text-[12px] leading-[2.41]">
                                     <li><a href="#" className="hover:underline">asd</a></li>
                                     <li><a href="#" className="hover:underline">dsaas</a></li>
@@ -339,14 +339,14 @@ export default function Welcome({ products = [], reviews = [] }: { products?: Pr
                                 </ul>
                             </div>
                             <div>
-                                <h3 className="text-[14px] font-semibold text-[#333333] mb-2 tracking-[-0.01em]">Services</h3>
+                                <h3 className="text-[14px] font-semibold text-foreground mb-2 tracking-[-0.01em]">Services</h3>
                                 <ul className="space-y-2 text-[12px] leading-[2.41]">
                                     <li><a href="#" className="hover:underline">Apple Music</a></li>
                                     <li><a href="#" className="hover:underline">Apple TV+</a></li>
                                 </ul>
                             </div>
                         </div>
-                        <hr className="border-[#e0e0e0] my-4" />
+                        <hr className="border-border my-4" />
                         <div className="flex flex-col md:flex-row justify-between items-center">
                             <p>Copyright © {new Date().getFullYear()} SEAPEDIA Inc. All rights reserved.</p>
                             <div className="space-x-4 mt-4 md:mt-0">
