@@ -62,7 +62,7 @@ export default function Show({ product }: { product: Product }) {
                             
                             <div className="mt-auto">
                                 <Link 
-                                    href={route('login')}
+                                    href="/login"
                                     className="w-full bg-primary text-primary-foreground flex justify-center items-center gap-2 py-4 rounded-full font-semibold text-[17px] hover:bg-primary/90 transition-colors"
                                 >
                                     <ShoppingBag size={20} />
