@@ -137,7 +137,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
  * @see app/Http/Controllers/Admin/VoucherController.php:36
  * @route '/admin/vouchers/{discount}'
  */
-export const destroy = (args: { discount: number | { id: number } } | [discount: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+export const destroy = (args: { discount: string | number | { id: string | number } } | [discount: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -152,7 +152,7 @@ destroy.definition = {
  * @see app/Http/Controllers/Admin/VoucherController.php:36
  * @route '/admin/vouchers/{discount}'
  */
-destroy.url = (args: { discount: number | { id: number } } | [discount: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+destroy.url = (args: { discount: string | number | { id: string | number } } | [discount: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { discount: args }
     }
@@ -185,7 +185,7 @@ destroy.url = (args: { discount: number | { id: number } } | [discount: number |
  * @see app/Http/Controllers/Admin/VoucherController.php:36
  * @route '/admin/vouchers/{discount}'
  */
-destroy.delete = (args: { discount: number | { id: number } } | [discount: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
+destroy.delete = (args: { discount: string | number | { id: string | number } } | [discount: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(args, options),
     method: 'delete',
 })
@@ -195,7 +195,7 @@ destroy.delete = (args: { discount: number | { id: number } } | [discount: numbe
  * @see app/Http/Controllers/Admin/VoucherController.php:36
  * @route '/admin/vouchers/{discount}'
  */
-    const destroyForm = (args: { discount: number | { id: number } } | [discount: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const destroyForm = (args: { discount: string | number | { id: string | number } } | [discount: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url(args, {
                     [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                         _method: 'DELETE',
@@ -210,7 +210,7 @@ destroy.delete = (args: { discount: number | { id: number } } | [discount: numbe
  * @see app/Http/Controllers/Admin/VoucherController.php:36
  * @route '/admin/vouchers/{discount}'
  */
-        destroyForm.delete = (args: { discount: number | { id: number } } | [discount: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        destroyForm.delete = (args: { discount: string | number | { id: string | number } } | [discount: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url(args, {
                         [options?.mergeQuery ? 'mergeQuery' : 'query']: {
                             _method: 'DELETE',

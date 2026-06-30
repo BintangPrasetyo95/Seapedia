@@ -82,7 +82,7 @@ index.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
  * @see app/Http/Controllers/Driver/JobController.php:32
  * @route '/driver/jobs/{order}/take'
  */
-export const takeJob = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const takeJob = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: takeJob.url(args, options),
     method: 'post',
 })
@@ -97,7 +97,7 @@ takeJob.definition = {
  * @see app/Http/Controllers/Driver/JobController.php:32
  * @route '/driver/jobs/{order}/take'
  */
-takeJob.url = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+takeJob.url = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { order: args }
     }
@@ -130,7 +130,7 @@ takeJob.url = (args: { order: number | { id: number } } | [order: number | { id:
  * @see app/Http/Controllers/Driver/JobController.php:32
  * @route '/driver/jobs/{order}/take'
  */
-takeJob.post = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+takeJob.post = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: takeJob.url(args, options),
     method: 'post',
 })
@@ -140,7 +140,7 @@ takeJob.post = (args: { order: number | { id: number } } | [order: number | { id
  * @see app/Http/Controllers/Driver/JobController.php:32
  * @route '/driver/jobs/{order}/take'
  */
-    const takeJobForm = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const takeJobForm = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: takeJob.url(args, options),
         method: 'post',
     })
@@ -150,7 +150,7 @@ takeJob.post = (args: { order: number | { id: number } } | [order: number | { id
  * @see app/Http/Controllers/Driver/JobController.php:32
  * @route '/driver/jobs/{order}/take'
  */
-        takeJobForm.post = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        takeJobForm.post = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: takeJob.url(args, options),
             method: 'post',
         })
@@ -161,7 +161,7 @@ takeJob.post = (args: { order: number | { id: number } } | [order: number | { id
  * @see app/Http/Controllers/Driver/JobController.php:46
  * @route '/driver/jobs/{order}/complete'
  */
-export const completeJob = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+export const completeJob = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: completeJob.url(args, options),
     method: 'post',
 })
@@ -176,7 +176,7 @@ completeJob.definition = {
  * @see app/Http/Controllers/Driver/JobController.php:46
  * @route '/driver/jobs/{order}/complete'
  */
-completeJob.url = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions) => {
+completeJob.url = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions) => {
     if (typeof args === 'string' || typeof args === 'number') {
         args = { order: args }
     }
@@ -209,7 +209,7 @@ completeJob.url = (args: { order: number | { id: number } } | [order: number | {
  * @see app/Http/Controllers/Driver/JobController.php:46
  * @route '/driver/jobs/{order}/complete'
  */
-completeJob.post = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
+completeJob.post = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: completeJob.url(args, options),
     method: 'post',
 })
@@ -219,7 +219,7 @@ completeJob.post = (args: { order: number | { id: number } } | [order: number | 
  * @see app/Http/Controllers/Driver/JobController.php:46
  * @route '/driver/jobs/{order}/complete'
  */
-    const completeJobForm = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    const completeJobForm = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: completeJob.url(args, options),
         method: 'post',
     })
@@ -229,7 +229,7 @@ completeJob.post = (args: { order: number | { id: number } } | [order: number | 
  * @see app/Http/Controllers/Driver/JobController.php:46
  * @route '/driver/jobs/{order}/complete'
  */
-        completeJobForm.post = (args: { order: number | { id: number } } | [order: number | { id: number } ] | number | { id: number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+        completeJobForm.post = (args: { order: string | number | { id: string | number } } | [order: string | number | { id: string | number } ] | string | number | { id: string | number }, options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: completeJob.url(args, options),
             method: 'post',
         })

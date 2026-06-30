@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 120.00,
                 'stock' => 15,
                 'category' => 'Equipment',
-                'image' => 'https://images.unsplash.com/photo-1595804593853-2780e14cb7b9?auto=format&fit=crop&q=80&w=600'
+                'image' => 'https://plus.unsplash.com/premium_photo-1673912604928-c8472db18540?auto=format&fit=crop&q=80&w=600'
             ],
             [
                 'name' => 'Heavy Duty Fishing Net',
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'price' => 35.00,
                 'stock' => 100,
                 'category' => 'Equipment',
-                'image' => 'https://images.unsplash.com/photo-1563806377651-7890bc20d75a?auto=format&fit=crop&q=80&w=600'
+                'image' => 'https://plus.unsplash.com/premium_photo-1664908242643-6563df834c3f?auto=format&fit=crop&q=80&w=600'
             ],
         ];
 
