@@ -18,7 +18,7 @@ class DashboardController extends Controller
             ->latest()
             ->get();
             
-        $totalEarnings = $completedJobs->sum('delivery_fee');
+        $totalEarnings = $completedJobs->sum('delivery_fee') * 0.8;
         $totalJobs = $completedJobs->count();
 
         return inertia('driver/dashboard', [

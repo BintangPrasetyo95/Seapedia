@@ -12,12 +12,17 @@ interface OrderItem {
 
 interface Order {
     id: number;
+    subtotal?: string;
+    discount_amount?: string;
+    tax_amount?: string;
+    delivery_fee?: string;
     total_amount: string;
     status: string;
     shipping_address: string;
     created_at: string;
     user: { name: string; email: string };
     items: OrderItem[];
+    statusHistories?: { id: number; status: string; created_at: string }[];
 }
 
 export default function SellerOrders({ orders }: { orders: Order[] }) {
@@ -55,8 +60,15 @@ export default function SellerOrders({ orders }: { orders: Order[] }) {
                                                 Placed on {new Date(order.created_at).toLocaleDateString()} by {order.user.name}
                                             </p>
                                         </div>
-                                        <div className="flex items-center gap-4">
-                                            <span className="text-[17px] font-semibold">${parseFloat(order.total_amount).toFixed(2)}</span>
+                                        <div className="flex flex-col items-end gap-2 min-w-[200px]">
+                                            <div className="flex flex-col gap-1 text-sm w-full border-b border-border pb-2 mb-2">
+                                                <div className="flex justify-between w-full text-muted-foreground"><span>Subtotal:</span> <span>${parseFloat(order.subtotal || '0').toFixed(2)}</span></div>
+                                                <div className="flex justify-between w-full text-muted-foreground"><span>Discount:</span> <span>-${parseFloat(order.discount_amount || '0').toFixed(2)}</span></div>
+                                                <div className="flex justify-between w-full text-muted-foreground"><span>Delivery:</span> <span>${parseFloat(order.delivery_fee || '0').toFixed(2)}</span></div>
+                                                <div className="flex justify-between w-full text-muted-foreground"><span>Tax:</span> <span>${parseFloat(order.tax_amount || '0').toFixed(2)}</span></div>
+                                                <div className="flex justify-between w-full font-semibold mt-1"><span>Total:</span> <span>${parseFloat(order.total_amount).toFixed(2)}</span></div>
+                                            </div>
+                                            <div className="flex justify-end w-full">
                                             <Select value={order.status} onValueChange={(value) => handleStatusChange(order.id, value)}>
                                                 <SelectTrigger className="w-[140px]">
                                                     <SelectValue placeholder="Status" />
@@ -69,6 +81,7 @@ export default function SellerOrders({ orders }: { orders: Order[] }) {
                                                     <SelectItem value="Dibatalkan">Dibatalkan</SelectItem>
                                                 </SelectContent>
                                             </Select>
+                                            </div>
                                         </div>
                                     </div>
                                     
@@ -91,6 +104,20 @@ export default function SellerOrders({ orders }: { orders: Order[] }) {
                                             </p>
                                         </div>
                                     </div>
+                                    
+                                    {order.statusHistories && order.statusHistories.length > 0 && (
+                                        <div className="mt-2 pt-4 border-t border-border">
+                                            <h4 className="text-[15px] font-semibold mb-3">Timeline</h4>
+                                            <div className="space-y-2">
+                                                {order.statusHistories.map(sh => (
+                                                    <div key={sh.id} className="flex justify-between text-sm text-muted-foreground">
+                                                        <span>{new Date(sh.created_at).toLocaleString()}</span>
+                                                        <span className="font-semibold">{sh.status}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>

@@ -34,7 +34,7 @@ class DashboardController extends Controller
         // we will instead find orders that WOULD be overdue if we advanced 1 day, OR just rely on real dates but we can artificially shift created_at back by 1 day for testing.
         
         // Actually, to "simulate next day", let's shift all incomplete orders' created_at back by 1 day.
-        $orders = Order::whereNotIn('status', ['Pesanan Selesai', 'Dibatalkan'])->get();
+        $orders = Order::whereNotIn('status', ['Pesanan Selesai', 'Dikembalikan'])->get();
         foreach ($orders as $order) {
             $order->created_at = $order->created_at->subDay();
             $order->save(['timestamps' => false]);
@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
     private function processOverdueOrders()
     {
-        $orders = Order::whereNotIn('status', ['Pesanan Selesai', 'Dibatalkan'])->get();
+        $orders = Order::whereNotIn('status', ['Pesanan Selesai', 'Dikembalikan'])->get();
         $now = now();
 
         foreach ($orders as $order) {
@@ -61,12 +61,18 @@ class DashboardController extends Controller
 
             if ($order->created_at->diffInDays($now) >= $slaDays) {
                 // Cancel order
-                $order->update(['status' => 'Dibatalkan']);
+                $order->update(['status' => 'Dikembalikan']);
                 
                 // Refund Buyer
                 $buyer = $order->user;
                 if ($buyer) {
                     $buyer->increment('wallet_balance', $order->total_amount);
+                    \App\Models\WalletTransaction::create([
+                        'user_id' => $buyer->id,
+                        'amount' => $order->total_amount,
+                        'type' => 'credit',
+                        'description' => 'Refund for overdue order #' . $order->id
+                    ]);
                 }
 
                 // Restore Stock

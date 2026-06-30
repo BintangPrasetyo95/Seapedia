@@ -63,15 +63,27 @@ interface Product {
     store?: Store;
 }
 
-export default function Welcome({ products = [] }: { products?: Product[] }) {
+interface Review {
+    id: number;
+    rating: number;
+    comment: string;
+    user?: { name: string };
+}
+
+export default function Welcome({ products = [], reviews = [] }: { products?: Product[], reviews?: Review[] }) {
     const { auth } = usePage().props as any;
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [name, setName] = useState('');
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const submitReview = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!name.trim()) {
+            toast.error("Please enter your name.");
+            return;
+        }
         if (rating === 0) {
             toast.error("Please select a rating.");
             return;
@@ -83,8 +95,9 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
         
         setIsSubmitting(true);
         try {
-            await axios.post('/reviews', { rating, comment });
+            await axios.post('/reviews', { name, rating, comment });
             toast.success("Thank you for your review!");
+            setName('');
             setRating(0);
             setComment('');
         } catch (error) {
@@ -109,14 +122,6 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                         <div className="flex items-center gap-2">
                             <ShoppingBag size={14} className="opacity-80" />
                         </div>
-
-                        {/* Desktop Nav */}
-                        {/* <nav className="hidden md:flex items-center gap-8 opacity-80">
-                            <a href="#" className="hover:opacity-100 transition-opacity">Store</a>
-                            <a href="#" className="hover:opacity-100 transition-opacity">Mac</a>
-                            <a href="#" className="hover:opacity-100 transition-opacity">iPad</a>
-                            <a href="#" className="hover:opacity-100 transition-opacity">iPhone</a>
-                        </nav> */}
 
                         <div className="hidden md:flex items-center gap-4 opacity-80">
                             {auth?.user ? (
@@ -148,13 +153,13 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                         </p>
                         <div className="flex items-center gap-4 mb-12">
                             <Link 
-                                href="#catalog" 
+                                href={heroProduct ? `/products/${heroProduct.id}` : '#'} 
                                 className="bg-primary text-primary-foreground text-[17px] font-normal rounded-full px-5.5 py-2.75 hover:scale-95 transition-transform"
                             >
                                 Buy
                             </Link>
                             <Link 
-                                href={register()} 
+                                href={heroProduct ? `/products/${heroProduct.id}` : '#'} 
                                 className="text-primary text-[17px] font-normal hover:underline"
                             >
                                 Learn more &gt;
@@ -180,13 +185,13 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                         </p>
                         <div className="flex items-center gap-4 mb-12">
                             <Link 
-                                href="#" 
+                                href={`/products/${secondProduct.id}`} 
                                 className="bg-primary text-primary-foreground text-[17px] font-normal rounded-full px-5.5 py-2.75 hover:scale-95 transition-transform"
                             >
                                 Buy
                             </Link>
                             <Link 
-                                href="#" 
+                                href={`/products/${secondProduct.id}`} 
                                 className="text-[#2997ff] text-[17px] font-normal hover:underline"
                             >
                                 Learn more &gt;
@@ -216,13 +221,13 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                                     </p>
                                     <div className="flex items-center gap-4 mb-8">
                                         <Link 
-                                            href="#" 
+                                            href={`/products/${product.id}`} 
                                             className="bg-primary text-primary-foreground text-[14px] font-normal rounded-full px-4 py-2 hover:scale-95 transition-transform"
                                         >
                                             Buy
                                         </Link>
                                         <Link 
-                                            href="#" 
+                                            href={`/products/${product.id}`} 
                                             className="text-primary text-[14px] font-normal hover:underline"
                                         >
                                             Learn more &gt;
@@ -241,6 +246,34 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                     </section>
                     )}
 
+                    {/* Reviews List */}
+                    {reviews.length > 0 && (
+                        <section className="w-full py-20 px-4 bg-background border-t border-gray-100">
+                            <div className="max-w-5xl mx-auto">
+                                <h2 className="text-[32px] font-semibold tracking-[-0.01em] mb-12 text-center">What Our Users Say</h2>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    {reviews.map((review: any) => (
+                                        <div key={review.id} className="bg-[#f5f5f7] p-6 rounded-3xl">
+                                            <div className="flex gap-1 mb-3">
+                                                {[1, 2, 3, 4, 5].map((star) => (
+                                                    <Star 
+                                                        key={star} 
+                                                        size={16} 
+                                                        className={review.rating >= star ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'} 
+                                                    />
+                                                ))}
+                                            </div>
+                                            <p className="text-[#1d1d1f] text-[15px] mb-4">"{review.comment}"</p>
+                                            <p className="text-[#86868b] text-[13px] font-semibold">
+                                                {review.reviewer_name || (review.user ? review.user.name : 'Anonymous Guest')}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </section>
+                    )}
+
                     {/* App Review Form */}
                     <section className="w-full py-20 px-4 bg-[#f5f5f7]">
                         <div className="max-w-200 mx-auto bg-white rounded-3xl p-8 shadow-sm text-center">
@@ -248,6 +281,14 @@ export default function Welcome({ products = [] }: { products?: Product[] }) {
                             <p className="text-muted-foreground mb-8 text-[17px]">Tell us what you think about SEAPEDIA.</p>
                             
                             <form onSubmit={submitReview} className="max-w-125 mx-auto space-y-6">
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    placeholder="Your Name"
+                                    className="w-full p-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                                    maxLength={255}
+                                />
                                 <div className="flex justify-center gap-2">
                                     {[1, 2, 3, 4, 5].map((star) => (
                                         <button 

@@ -25,7 +25,8 @@ export default function Dashboard() {
                         )}
                     </div>
                     <p className="text-[21px] font-semibold tracking-[0.231px] text-muted-foreground mb-12">
-                        You are currently logged in as a <span className="text-primary">{activeRole}</span>.
+                        You are currently logged in as a <span className="text-primary">{activeRole}</span>. 
+                        Your owned roles: <span className="font-normal text-foreground">{(auth?.user?.roles || []).map((r: any) => r.name).join(', ')}</span>
                     </p>
 
                     {activeRole === 'Seller' && (

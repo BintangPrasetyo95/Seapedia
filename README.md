@@ -86,10 +86,44 @@ After running the database seeders, you can use the following default test accou
 | Driver | `driver@seapedia.com`  | Can access the Job Board to take available deliveries and view earnings.    |
 | Multi  | `multi@seapedia.com`   | Account with both Seller and Buyer roles to test the Role Selection screen. |
 
-## Development & Testing Notes
+## Business Rules & Implementation Notes
 
-- **SLA Simulation**: Admins can test the automated overdue order rules by clicking the "Simulate Next Day (SLA)" button on their dashboard. This advances the creation date of all incomplete orders and cancels/refunds those exceeding their shipping method SLA.
-- **Design Language**: All UI modifications must adhere strictly to the guidelines defined in `DESIGN.md`.
+### Single-Store Checkout Behavior
+SEAPEDIA enforces a **Single-Store Checkout** rule. A buyer's cart may only contain products from a single store at a time. If a buyer attempts to add a product from a different store to an already populated cart, the system will prompt them to clear the cart or checkout the existing items first. This ensures clean order routing and prevents complex multi-store shipping fee calculations.
+
+### Discount Combination and PPN 12% Rule
+- **Discount Types:** The system supports Vouchers (limited usage) and Promos (unlimited usage, expiring). 
+- **Combination Rule:** Currently, only one discount code can be applied per checkout.
+- **PPN 12% Calculation:** PPN 12% is applied to the **subtotal AFTER the discount has been deducted**. It is not applied to the delivery fee. `Grand Total = (Subtotal - Discount) + (Subtotal - Discount) * 0.12 + Delivery Fee`.
+
+### Driver Earning Rule
+Drivers earn a flat 80% of the calculated delivery fee for every job they successfully complete (i.e. status moves to `Pesanan Selesai`). The remaining 20% is retained by the platform. Earnings are immediately added to their historical dashboard summary once the order is completed.
+
+### Overdue SLAs and Simulation
+The system enforces the following Service Level Agreements (SLAs) for order shipping:
+- **Instant:** Must be shipped on the same day (0 days grace period).
+- **Next Day:** Must be shipped within 1 day.
+- **Regular:** Must be shipped within 3 days.
+If a Seller fails to process an order to `Menunggu Pengirim` within these SLAs, the order is automatically moved to the `Dikembalikan` (Returned/Refunded) status. The buyer's wallet balance is refunded, and the product stock is restored.
+**Simulation:** Admins have a "Simulate Next Day" button on their dashboard. This artificially ages all incomplete orders by 1 day and triggers the Overdue verification job to demonstrate the SLA logic.
+
+### Security Measures
+- **SQL Injection:** Exclusively uses Laravel's Eloquent ORM and Query Builder which implements PDO parameter binding out-of-the-box.
+- **XSS Prevention:** React automatically escapes all output. For raw HTML or user generated content like Application Reviews, the backend controller actively sanitizes the input using `strip_tags()` before saving to the database.
+- **Role-Based Access Control (RBAC):** An `EnsureActiveRole` middleware is attached to all private routes. It aggressively verifies the `active_role` session variable against the required route prefix (e.g. `/buyer/*` requires `active_role === 'Buyer'`). It prevents users from manually typing a URL to bypass dashboards.
+- **Input Validation:** Extensive use of Laravel's Request Validator (`$request->validate()`) to ensure no malformed data reaches the database.
+
+## End-to-End Testing Guide
+
+1. **Guest Browsing & Reviews:** Without logging in, browse the catalog on the homepage and submit a 5-star application review.
+2. **Setup Users:** Register a new account or use the seeded `multi@seapedia.com` account. Login and select the **Buyer** role.
+3. **Wallet & Checkout:** Navigate to the Wallet and top up your balance. Add an item from "Bintang Premium Seafood" to your cart. Apply a discount code (e.g. `SUMMER` promo) and complete the checkout.
+4. **Seller Fulfillment:** Logout and login as `seller@seapedia.com`. Navigate to "Manage Orders". Find the incoming order and change the status to `Menunggu Pengirim` (Waiting for Driver).
+5. **Driver Delivery:** Logout and login as `driver@seapedia.com`. Go to the Job Board, find the order, and click "Take Job" (status becomes `Sedang Dikirim`). Once delivered, click "Confirm Completion" (status becomes `Pesanan Selesai`).
+6. **Admin Simulation (Optional):** Login as `admin@seapedia.com`. Click "Simulate Next Day" multiple times to observe any unprocessed orders getting automatically refunded and marked as `Dikembalikan`.
+
+## API Documentation
+Please refer to [API_DOCUMENTATION.md](API_DOCUMENTATION.md) for a comprehensive list of all backend API endpoints.
 
 ## License
 Proprietary / Internal.

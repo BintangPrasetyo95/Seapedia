@@ -16,10 +16,15 @@ interface OrderItem {
 interface Order {
     id: number;
     status: string;
+    subtotal?: string;
+    discount_amount?: string;
+    tax_amount?: string;
+    delivery_fee?: string;
     total_amount: string;
     shipping_address: string;
     created_at: string;
     items: OrderItem[];
+    statusHistories?: { id: number; status: string; created_at: string }[];
 }
 
 export default function BuyerOrders({ orders = [] }: { orders: Order[] }) {
@@ -55,8 +60,12 @@ export default function BuyerOrders({ orders = [] }: { orders: Order[] }) {
                                             <p className="text-sm text-muted-foreground">Placed: {new Date(order.created_at).toLocaleDateString()}</p>
                                             <p className="text-sm text-muted-foreground">Status: <span className="font-semibold capitalize text-primary">{order.status}</span></p>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="font-bold text-xl">${parseFloat(order.total_amount).toFixed(2)}</p>
+                                        <div className="text-right flex flex-col gap-1 items-end min-w-[200px]">
+                                            <p className="text-sm text-muted-foreground flex justify-between w-full"><span>Subtotal:</span> <span>${parseFloat(order.subtotal || '0').toFixed(2)}</span></p>
+                                            <p className="text-sm text-muted-foreground flex justify-between w-full"><span>Discount:</span> <span>-${parseFloat(order.discount_amount || '0').toFixed(2)}</span></p>
+                                            <p className="text-sm text-muted-foreground flex justify-between w-full"><span>Delivery Fee:</span> <span>${parseFloat(order.delivery_fee || '0').toFixed(2)}</span></p>
+                                            <p className="text-sm text-muted-foreground flex justify-between w-full border-b border-border pb-1 mb-1"><span>PPN 12%:</span> <span>${parseFloat(order.tax_amount || '0').toFixed(2)}</span></p>
+                                            <p className="font-bold text-xl flex justify-between w-full mt-1"><span>Total:</span> <span>${parseFloat(order.total_amount).toFixed(2)}</span></p>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
@@ -76,6 +85,19 @@ export default function BuyerOrders({ orders = [] }: { orders: Order[] }) {
                                     <div className="mt-4 pt-4 border-t border-border">
                                         <p className="text-sm text-muted-foreground">Shipping Address: {order.shipping_address}</p>
                                     </div>
+                                    {order.statusHistories && order.statusHistories.length > 0 && (
+                                        <div className="mt-4 pt-4 border-t border-border">
+                                            <h4 className="text-[15px] font-semibold mb-3">Timeline</h4>
+                                            <div className="space-y-2">
+                                                {order.statusHistories.map(sh => (
+                                                    <div key={sh.id} className="flex justify-between text-sm text-muted-foreground">
+                                                        <span>{new Date(sh.created_at).toLocaleString()}</span>
+                                                        <span className="font-semibold">{sh.status}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>

@@ -4,9 +4,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return inertia('welcome', [
-        'products' => \App\Models\Product::with('store')->latest()->take(6)->get()
+        'products' => \App\Models\Product::with('store')->latest()->take(6)->get(),
+        'reviews' => \App\Models\ApplicationReview::with('user')->latest()->take(6)->get()
     ]);
 })->name('home');
+
+Route::get('/products/{product}', function (\App\Models\Product $product) {
+    return inertia('catalog/show', [
+        'product' => $product->load('store')
+    ]);
+})->name('products.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

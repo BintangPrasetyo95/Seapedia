@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function BuyerWallet({ balance = 0 }: { balance: string | number }) {
+export default function BuyerWallet({ balance = 0, transactions = [] }: { balance: string | number, transactions?: any[] }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         amount: '',
     });
@@ -56,6 +56,27 @@ export default function BuyerWallet({ balance = 0 }: { balance: string | number 
                                 </Button>
                             </form>
                         </div>
+                    </div>
+                    
+                    <div className="mt-8 bg-background border border-border rounded-3xl p-10 shadow-sm">
+                        <h3 className="text-2xl font-semibold mb-6">Transaction History</h3>
+                        {(!transactions || transactions.length === 0) ? (
+                            <p className="text-muted-foreground text-center py-8">No transactions yet.</p>
+                        ) : (
+                            <div className="space-y-4">
+                                {transactions.map((t: any) => (
+                                    <div key={t.id} className="flex justify-between items-center border-b border-border pb-4 last:border-0 last:pb-0">
+                                        <div>
+                                            <p className="font-medium text-foreground">{t.description || 'Transaction'}</p>
+                                            <p className="text-sm text-muted-foreground">{new Date(t.created_at).toLocaleString()}</p>
+                                        </div>
+                                        <div className={`font-semibold ${t.type === 'credit' ? 'text-green-500' : 'text-red-500'}`}>
+                                            {t.type === 'credit' ? '+' : '-'}${parseFloat(t.amount).toFixed(2)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

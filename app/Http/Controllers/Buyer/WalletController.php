@@ -9,8 +9,10 @@ class WalletController extends Controller
 {
     public function index()
     {
+        $transactions = \App\Models\WalletTransaction::where('user_id', auth()->id())->latest()->get();
         return inertia('buyer/wallet/index', [
-            'balance' => auth()->user()->wallet_balance
+            'balance' => auth()->user()->wallet_balance,
+            'transactions' => $transactions
         ]);
     }
 
@@ -23,6 +25,13 @@ class WalletController extends Controller
         $user = auth()->user();
         $user->wallet_balance += $request->amount;
         $user->save();
+
+        \App\Models\WalletTransaction::create([
+            'user_id' => $user->id,
+            'amount' => $request->amount,
+            'type' => 'credit',
+            'description' => 'Wallet Top-up'
+        ]);
 
         return back()->with('success', 'Wallet topped up successfully!');
     }

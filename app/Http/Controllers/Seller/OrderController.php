@@ -17,7 +17,7 @@ class OrderController extends Controller
         }
 
         $orders = $store->orders()
-            ->with(['user', 'items.product'])
+            ->with(['user', 'items.product', 'statusHistories'])
             ->latest()
             ->get();
 

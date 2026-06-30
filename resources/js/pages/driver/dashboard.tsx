@@ -36,7 +36,7 @@ export default function DriverDashboard({ metrics, recent_history }: { metrics: 
                         <div className="bg-background border border-border rounded-[18px] p-8 flex flex-col justify-center">
                             <p className="text-[17px] font-semibold tracking-[-0.374px] text-muted-foreground mb-2">Total Earnings</p>
                             <p className="text-[40px] font-semibold tracking-[-0.01em] text-foreground">
-                                Rp {Number(metrics.total_earnings).toLocaleString('id-ID')}
+                                ${Number(metrics.total_earnings).toLocaleString('en-US', {minimumFractionDigits: 2})}
                             </p>
                         </div>
                         <div className="bg-background border border-border rounded-[18px] p-8 flex flex-col justify-center">
@@ -76,7 +76,7 @@ export default function DriverDashboard({ metrics, recent_history }: { metrics: 
                                                     </span>
                                                 </td>
                                                 <td className="py-4 px-6 text-[17px] text-foreground tracking-[-0.374px]">
-                                                    Rp {Number(job.delivery_fee).toLocaleString('id-ID')}
+                                                    ${Number(job.delivery_fee * 0.8).toLocaleString('en-US', {minimumFractionDigits: 2})}
                                                 </td>
                                                 <td className="py-4 px-6 text-[14px] text-muted-foreground tracking-[-0.224px] text-right">
                                                     {new Date(job.created_at).toLocaleDateString()}

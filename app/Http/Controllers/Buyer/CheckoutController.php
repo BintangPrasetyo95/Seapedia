@@ -99,6 +99,9 @@ class CheckoutController extends Controller
                     'user_id' => $user->id,
                     'store_id' => $storeId,
                     'status' => 'Sedang Dikemas',
+                    'subtotal' => $subtotal,
+                    'discount_amount' => $discountAmount,
+                    'tax_amount' => $tax,
                     'total_amount' => $grandTotal, // Use calculated grand total
                     'shipping_address' => $request->shipping_address,
                     'shipping_method' => $request->shipping_method,
@@ -126,6 +129,12 @@ class CheckoutController extends Controller
 
             // Deduct wallet balance
             $user->decrement('wallet_balance', $grandTotal);
+            \App\Models\WalletTransaction::create([
+                'user_id' => $user->id,
+                'amount' => $grandTotal,
+                'type' => 'debit',
+                'description' => 'Order checkout payment'
+            ]);
 
             DB::commit();
 

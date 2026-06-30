@@ -11,7 +11,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = auth()->user()->orders()->with('items.product.store')->latest()->get();
+        $orders = auth()->user()->orders()->with(['items.product.store', 'statusHistories'])->latest()->get();
         return inertia('buyer/orders/index', [
             'orders' => $orders
         ]);
